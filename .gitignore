@@ -2,3 +2,6 @@
 *.log
 
 zikken.ipynb
+
+# python
+__pycache__/
