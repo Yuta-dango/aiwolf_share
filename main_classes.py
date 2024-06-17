@@ -1,5 +1,6 @@
 import breakdown # remarkを要素に分割/flag
 import embedding # 文章をembedding
+from breakdown import get_list # remarkを要素に分割/flag
 from embedding import get_embedding, cos_sim # embeddingの取得/cos類似度
 from csv_to_df import prepare_dataframe
 
@@ -15,24 +16,25 @@ class Sentence:
 
 
 class Comment:
-    def __init__(self, remark, talker):
+    def __init__(self, remark, talker, me="Agent[00]"):
         self.remark = remark
         self.talker = talker
+        self.me = me
         self.flag = None 
         
     def remark_to_protocol(self):
         """
         大元のメソッド. Commentのインスタンスに対して呼び出すと、remarkがプロトコルに変換され、flagが立つ
         """
-        vectorlist = self.remark_to_vectors(self.talker, self.remark)
+        vectorlist = self.remark_to_vectors(self.talker, self.remark, self.me)
         return self.vectors_to_protocols(vectorlist)
 
-    def remark_to_vectors(self, talker, remark):
+    def remark_to_vectors(self, talker, remark, me):
         """
         gptの処理を呼び出して、remarkを要素に分割し、各要素をembeddingしたリストを返す
         flagも設定する
         """
-        return_from_gpt = breakdown.get_list(talker, remark)
+        return_from_gpt = get_list(talker, remark, me)
         sentences = return_from_gpt[0]
         self.flag = return_from_gpt[1]
 

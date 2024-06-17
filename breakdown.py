@@ -6,7 +6,7 @@ import os
 openai.api_key = os.environ["OPENAI_API_KEY"]
 client = OpenAI()
 
-def get_list(talker, remark, model="gpt-3.5-turbo-0125", me='Agent[00]'):
+def get_list(talker, remark, me, model="gpt-3.5-turbo-0125"):
     """
     sentense: 発話内容
     """
