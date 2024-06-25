@@ -6,7 +6,7 @@ import os
 openai.api_key = os.environ["OPENAI_API_KEY"]
 client = OpenAI()
 
-def get_list(talker, remark, me, model="gpt-3.5-turbo-0125"):
+def get_list(talker, remark, me, model="gpt-3.5-turbo-0125"): #gpt-3.5-turbo-0125
     """
     sentense: 発話内容
     """
@@ -21,22 +21,20 @@ def get_list(talker, remark, me, model="gpt-3.5-turbo-0125"):
     - the second element is a python bool for indicator of request and inquiry. 
     
     # rule 
-    - Remarks should be divided as finely as possible. Each element in the list should be less than 12 words (less than 8 words is better)
+    - The Remark should be divided as finely as possible. Each element in the list should be less than 12 words (less than 8 words is better)
     - Use the following verbs actively: estimate, suspect, vote, divine, agree
-    - Representing a person, use Agent[00], Agent[01], Agent[02], Agent[03], Agent[04], or I
+    - Representing a person, never use 'he' or 'she'. Use only Agent[00], Agent[01], Agent[02], Agent[03], Agent[04], or I. 
     - Representing the job title, use werewolf, possessed, villager or seer
-    - When referring to the result of divination, use "black" for werewolf or possessed, "white" for villager or seer
     - Ignore information that has nothing to do with werewolf game 
-    - . is unnecessary
-    - The second element must be 0 or 1. It works as a flag. If the speaker request or inquire something to {me}, the flag must be 1. If else, the flag is 0.
-  
-    # example
-    Talker: Agent[00] 
-    Remark: エージェント[03]がずいぶん口をつぐんでるな。なんなんだあいつは。あいつが人狼かもしれん。今夜はエージェント[03]に投票するつもりや。
-    Here, your answer should be (["Agent[03] is quiet", "Agent[03] might be a werewolf", "I'm planning to vote for Agent[03] tonight"], 0)
+    - The second element works as a flag. If the speaker request or inquire something to {me}, the flag must be 1. If else, the flag is 0.
+    - Avoid using 'this' or 'that'. You should say clearly
+    # example 
+    Remark: Agent[01]がずいぶん口をつぐんでるな。お前は人狼なんじゃないのか？。今夜はAgent[01]に投票するつもりや。
+    Your answer should be (["{me} is quiet", "I think {me} is a werewolf", "I'm planning to vote for {me} tonight"], 1)
     """
 
-    user = f"Talker: {talker} Remark: {remark}"
+
+    user = f"Remark: {remark}"
 
 # 1Mあたり80円/240円
 # 入力が400、出力が100トークンの場合、発話1回あたり80/1000 + 240/10000 = 0.1円
@@ -62,12 +60,12 @@ def get_list(talker, remark, me, model="gpt-3.5-turbo-0125"):
 
 if __name__ == "__main__":
     talker = "Agent[03]"  
-    remark = "Agent[02]を占ったら黒だったよ。Agent[01]を占ったら白だったよ。"
+    remark = "Agent2に投票することには賛成できぬ"
+    me = "Agent[02]"
     with open("output.log", 'a') as f:
         print('入力: ', file=f)
         print(remark, file=f)
-        print(get_list(talker, remark), file=f)
+        print(f'me:{me}', file=f)
+        print(get_list(talker, remark, me), file=f)
         print(file=f)
-
-
 
