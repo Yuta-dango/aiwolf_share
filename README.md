@@ -38,6 +38,7 @@ me:Agent[02]
   - ブレイクダウンした文章にどうしてもhimなどが出てきてしまう. 
   - ダミーとして、vote/estimate/などにsomeoneやagentを主語としたものもや、he/himなどを入れたものを入れた方がいいかも
     - 特にeveryone estimate, everyone vote
+  - そもそもIを使うのはうまく行かなそう。代入先としてiも入れといた上でiには発言者を代入するべき
 
 - I am a seerとI am a SEERが0.69しか出ない -> [Agent]などを埋めるとき小文字で埋めるようにする
 - is determined to be は占い以外でも選ばれてしまいやすい -> estimateなどの文章を充実させるべき
