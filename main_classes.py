@@ -5,7 +5,7 @@ from embedding import get_embedding, cos_sim # embeddingの取得/cos類似度
 from csv_to_df import prepare_dataframe
 
 # dataframeの設定
-df = prepare_dataframe("embedded_all.csv")
+df = prepare_dataframe("embedded.csv")
 
 class Sentence:
     def __init__(self, verb, agent, role, team):
@@ -22,22 +22,35 @@ class Comment:
         self.me = me
         self.flag = None 
         
-    def remark_to_protocol(self):
+    def remark_to_protocol(self, ruizido_check=False, check_gpt=False):
         """
         大元のメソッド. Commentのインスタンスに対して呼び出すと、remarkがプロトコルに変換され、flagが立つ
         """
-        vectorlist = self.remark_to_vectors(self.talker, self.remark, self.me)
+        vectorlist = self.remark_to_vectors(check_gpt)
+        
+        if ruizido_check:
+            df_ruizido = df.copy()
+            for i in vectorlist:
+                df_ruizido["similarity"] = df_ruizido["embedded"].apply(lambda x: cos_sim(x, i))
+
+                # df_ruizido["similarity"]が高い順に
+                df_ruizido = df_ruizido.sort_values("similarity", ascending=False)
+                print(df_ruizido.iloc[:5, :])
+
         return self.vectors_to_protocols(vectorlist)
 
-    def remark_to_vectors(self, talker, remark, me):
+    def remark_to_vectors(self, check_gpt):
         """
         gptの処理を呼び出して、remarkを要素に分割し、各要素をembeddingしたリストを返す
         flagも設定する
+        check_gptがtrueの場合、gptの出力を表示する
         """
-        return_from_gpt = get_list(talker, remark, me)
+        return_from_gpt = get_list(self.talker, self.remark, self.me)
         sentences = return_from_gpt[0]
         self.flag = return_from_gpt[1]
-
+        
+        if check_gpt:
+            print(return_from_gpt)
         # 各要素をembeddingしたリスト
         return [get_embedding(sentence) for sentence in sentences]
     
@@ -62,6 +75,11 @@ class Comment:
     def vectors_to_protocols(self, vectorlist): #vectorlistはto_vectors(talker, comment)の返り値
         protocol_list = []
         for i in vectorlist:
+
+            # 類似度が0.67未満のものは無視
+            if self.ruizido(i)[0] < 0.67:
+                continue
+
             verb = df.loc[self.ruizido(i)[1], "Verb"]
             agent = df.loc[self.ruizido(i)[1], "Agent"]
             role = df.loc[self.ruizido(i)[1], "Role"]
@@ -70,7 +88,18 @@ class Comment:
             
             
             sentence = Sentence(verb, agent, role, team)
-            protocol_list.append(sentence)
-        
+
+            
+            # 重複するprotocolを省く
+            unnecessary = 0
+            for protocol in protocol_list:
+                if protocol.verb == sentence.verb and protocol.agent == sentence.agent and protocol.role == sentence.role and protocol.team == sentence.team:
+                    unnecessary = 1
+            if unnecessary == 0:
+                protocol_list.append(sentence)
+
         return protocol_list
+    
+    
+
         

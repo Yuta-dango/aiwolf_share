@@ -17,22 +17,22 @@ def get_list(talker, remark, me, model="gpt-3.5-turbo-0125"): #gpt-3.5-turbo-012
     # output
     - English
     - python tuple including two elements
-    - The first element is a python list(elements: contents of the input rewritten into concise contents)
-    - the second element is a python bool for indicator of request and inquiry. 
+    - The first element is a python list( contents of the input rewritten into concise contents)
+    - The second element is 0 or 1. It works as a flag. If the speaker request or inquire something to {me}, the flag must be 1. If else, the flag is 0.
     
     # rule 
-    - The Remark should be divided as finely as possible. Each element in the list should be less than 12 words (less than 8 words is better)
+    - The Remark should be divided as finely as possible.
+    - Avoid using 'this' or 'that'. It's better to have each element of the list be longer than that.
     - Use the following verbs actively: estimate, suspect, vote, divine, agree
-    - Representing a person, never use 'he' or 'she'. Use only Agent[00], Agent[01], Agent[02], Agent[03], Agent[04], or I. 
+    - Representing a person, never use he, him, she or her. Use only Agent[00], Agent[01], Agent[02], Agent[03], Agent[04], or I. 
     - Representing the job title, use werewolf, possessed, villager or seer
     - Ignore information that has nothing to do with werewolf game 
-    - The second element works as a flag. If the speaker request or inquire something to {me}, the flag must be 1. If else, the flag is 0.
-    - Avoid using 'this' or 'that'. You should say clearly
+     
     # example 
     Remark: Agent[01]がずいぶん口をつぐんでるな。お前は人狼なんじゃないのか？。今夜はAgent[01]に投票するつもりや。
     Your answer should be (["{me} is quiet", "I think {me} is a werewolf", "I'm planning to vote for {me} tonight"], 1)
     """
-
+    # - The Remark should be divided as finely as possible. Each element in the list should be less than 12 words (less than 8 words is better)
 
     user = f"Remark: {remark}"
 
@@ -54,13 +54,18 @@ def get_list(talker, remark, me, model="gpt-3.5-turbo-0125"): #gpt-3.5-turbo-012
         broken_list = eval(broken_list)
     if type(frag) == str:
         frag = eval(frag)
+        # fragがtrue/falseの場合、1/0に変換
+        if frag == True:
+            frag = 1
+        if frag == False:
+            frag = 0
     
     return broken_list, frag
 
 
 if __name__ == "__main__":
     talker = "Agent[03]"  
-    remark = "Agent2に投票することには賛成できぬ"
+    remark = "おいAgent[03]、お前は嘘をついているんだろ"
     me = "Agent[02]"
     with open("output.log", 'a') as f:
         print('入力: ', file=f)
