@@ -30,4 +30,14 @@ me:Agent[02]
 (['Agent[02] is a werewolf', 'I suspect Agent[02]', 'Agent[01] is human'], 0)
 - notV と　V　とのどちらかに特有の表現があると拾ってしまう？
 - しきい値をどうするか？
+  - Whom should I divineとI will divine Agent[03]で類似度0.57出てしまう ->類似度の判定基準は最低0.6必要
+  - I agree with Agent[01]. But today's weather is nice.とI agree with Agent[01]で0.69
 - 過去の発言をどう管理するか？(発言者ごとに管理して、各発言者の最後の発言をプロトコルから自然言語に変換する時にわたす？)
+- ダミー
+  - Agent1はみんなに黒だと言われている。その疑いを晴らすために、今夜は彼のことを占うよ、みたいな時にAgent00は黒だ、となってしまう
+  - ブレイクダウンした文章にどうしてもhimなどが出てきてしまう. 
+  - ダミーとして、vote/estimate/などにsomeoneやagentを主語としたものもや、he/himなどを入れたものを入れた方がいいかも
+    - 特にeveryone estimate, everyone vote
+
+- I am a seerとI am a SEERが0.69しか出ない -> [Agent]などを埋めるとき小文字で埋めるようにする
+- is determined to be は占い以外でも選ばれてしまいやすい -> estimateなどの文章を充実させるべき
