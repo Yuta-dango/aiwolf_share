@@ -1,8 +1,13 @@
+# 類似度の閾値はl83で設定している
+
+import numpy as np
+
 import breakdown # remarkを要素に分割/flag
 import embedding # 文章をembedding
 from breakdown import get_list # remarkを要素に分割/flag
 from embedding import get_embedding, cos_sim # embeddingの取得/cos類似度
 from csv_to_df import prepare_dataframe
+
 
 # dataframeの設定
 df = prepare_dataframe("embedded.csv")
@@ -78,6 +83,11 @@ class Comment:
 
             # 類似度が0.67未満のものは無視
             if self.ruizido(i)[0] < 0.67:
+                continue
+
+            # VerbがNoneの場合は無視
+            if df.loc[self.ruizido(i)[1], "Verb"] not in ['ESTIMATE', 'CO', 'SUSPECT', 'VOTE', 'DIVINATION', 'DIVINED', 'AGREE',\
+            'NOT ESTIMATE', 'NOT CO', 'NOT SUSPECT', 'NOT VOTE', 'NOT AGREE']:
                 continue
 
             verb = df.loc[self.ruizido(i)[1], "Verb"]

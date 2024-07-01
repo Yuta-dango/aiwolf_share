@@ -9,7 +9,7 @@ openai.api_key = os.environ["OPENAI_API_KEY"]
 
 client = OpenAI()
 
-def get_embedding(text, model="text-embedding-3-small"):
+def get_embedding(text, model="text-embedding-3-small"): # small or large 
    result = client.embeddings.create(input = [text], model=model).data[0].embedding
    return np.array(result)
 

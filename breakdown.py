@@ -6,7 +6,7 @@ import os
 openai.api_key = os.environ["OPENAI_API_KEY"]
 client = OpenAI()
 
-def get_list(talker, remark, me, model="gpt-3.5-turbo-0125"): #gpt-3.5-turbo-0125
+def get_list(talker, remark, me, model="gpt-4o"): #gpt-3.5-turbo-0125
     """
     sentense: 発話内容
     """
@@ -22,15 +22,17 @@ def get_list(talker, remark, me, model="gpt-3.5-turbo-0125"): #gpt-3.5-turbo-012
     
     # rule 
     - The Remark should be divided as finely as possible.
-    - Avoid using 'this' or 'that'. It's better to have each element of the list be longer than that.
+    - Avoid using reference terms like 'this', 'that' or 'so'. It's better to have each element of the list be longer than that.
     - Use the following verbs actively: estimate, suspect, vote, divine, agree
     - Representing a person, never use he, him, she or her. Use only Agent[00], Agent[01], Agent[02], Agent[03], Agent[04], or I. 
     - Representing the job title, use werewolf, possessed, villager or seer
     - Ignore information that has nothing to do with werewolf game 
      
     # example 
-    Remark: Agent[01]がずいぶん口をつぐんでるな。お前は人狼なんじゃないのか？。今夜はAgent[01]に投票するつもりや。
+    Remark: {me}がずいぶん口をつぐんでるな。{me}は人狼なんじゃないのか？。今夜は{me}に投票するつもりや。
     Your answer should be (["{me} is quiet", "I think {me} is a werewolf", "I'm planning to vote for {me} tonight"], 1)
+    Remark: Agent[04]は、占い師であることをカミングアウトしていますが、彼は嘘をついています。
+    Your answer should be (["Agent[04] claims to be a seer", "Agent[04] is lying"], 0)
     """
     # - The Remark should be divided as finely as possible. Each element in the list should be less than 12 words (less than 8 words is better)
 
