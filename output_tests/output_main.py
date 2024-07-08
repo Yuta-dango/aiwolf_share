@@ -8,7 +8,7 @@ from output_module import first_translate
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 #入力のプロトコル文
-protocol = "AND(A A A)(BBb B)"
+protocol = "REQUEST ANY (COMINGOUT ANY ANY)"
 first = first_translate(protocol)
 if first == None:
   first = "SKIP"

@@ -39,7 +39,7 @@ def first_translate(protocol):    #プロトコル文を最初の短い文章に
             if keyword == "ESTIMATE":
                 return f"I think {protocol.split()[1]} is the {protocol.split()[2]}."
             elif keyword == "COMINGOUT":
-                return f"I am the {protocol.split()[1]}."
+                return f"I am the {protocol.split()[2]}."                       #comingoutを他人に対して使うことは想定していない
             elif keyword == "DIVINATION":
                 return f"I will divine {protocol.split()[1]} tonight. "
             elif keyword == "GUARD":
@@ -51,7 +51,7 @@ def first_translate(protocol):    #プロトコル文を最初の短い文章に
             elif keyword == "DIVINED":
                 return f"I divined {protocol.split()[1]} last night and he was the {protocol.split()[2]}."
             elif keyword == "IDENTIFIED" :
-                return f"I identified {protocol.split()[1]} last night and he was the {protocol.split()[2]}."
+                return f"I identified {protocol.split()[1]} as a medium last night and he was the {protocol.split()[2]}."
             elif keyword == "GUARDED":
                 return f"I guaded {protocol.split()[1]} from werewolf last night."
             elif keyword == "VOTED":
@@ -65,7 +65,7 @@ def first_translate(protocol):    #プロトコル文を最初の短い文章に
             if keyword == "ESTIMATE":
                 return f"I think {protocol.split()[2]} is the {protocol.split()[3]}."
             elif keyword == "COMINGOUT":
-                return f"I am the {protocol.split()[2]}."
+                return f"I am the {protocol.split()[3]}."
             elif keyword == "DIVINATION":
                 return f"I will divine {protocol.split()[2]} tonight. "
             elif keyword == "GUARD":
