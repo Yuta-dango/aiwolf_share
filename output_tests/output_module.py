@@ -22,9 +22,23 @@ def keyword_check(protocol) :
         for i in keywords:
             if i in [protocol.split()[0], protocol.split()[1]]:
                 a = i
+                break
             else:
                 pass
-        return a
+        
+        if a == "NOT":
+            b = None
+            for i in verbs:
+                if i in [protocol.split()[1], protocol.split()[2], protocol.split()[3]]:
+                    b = i
+                    return "NOT" + " " + b
+                else:
+                    pass
+        else: 
+            return a
+                
+                    
+                
     
 
 def first_translate(protocol):    #プロトコル文を最初の短い文章に翻訳する関数

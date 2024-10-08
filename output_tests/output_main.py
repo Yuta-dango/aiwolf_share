@@ -8,8 +8,8 @@ from output_module import first_translate
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
 #入力のプロトコル文
-protocol = "DIVINATION Agent[01]" #REQUEST ANY (COMINGOUT ANY ANY)
-first = first_translate(protocol) # 
+protocol = "REQUEST ANY (COMINGOUT ANY ANY)" #REQUEST ANY (COMINGOUT ANY ANY)
+first = first_translate(protocol)
 if first == None:
   first = "SKIP"
 

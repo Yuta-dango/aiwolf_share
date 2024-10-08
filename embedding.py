@@ -15,3 +15,4 @@ def get_embedding(text, model="text-embedding-3-small"): # small or large
 
 def cos_sim(a, b):
    return a@b / (np.linalg.norm(a) * np.linalg.norm(b))
+
